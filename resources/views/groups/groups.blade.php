@@ -18,7 +18,7 @@
         </div>
 
         <button onclick="window.location.href='{{ route('groups.createGroup') }}'"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 transition shadow-lg shadow-blue-200">
+            class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 transition">
             <i class="fas fa-plus"></i>
             <span class="font-medium">Créer un groupe</span>
         </button>

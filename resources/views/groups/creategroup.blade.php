@@ -11,7 +11,7 @@
                        class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
             </div>
             <div class="flex justify-end gap-3">
-                <button onclick="window.location.href='{{ route('groups.index') }}'" type="button" class="px-4 py-2 text-gray-600 font-medium">Annuler</button>
+                <button onclick="window.location.href='{{ route('groups.index') }}'" type="button" class="px-4 py-2 border border-gray-300 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition">Annuler</button>
                 <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition">Créer</button>
             </div>
         </form>

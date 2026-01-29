@@ -1,16 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Contact;
 use App\Models\Group;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function index(){
+    public function index(Request $request)
+    {
         $groups = Group::all();
-        $contacts = Contact::with('group')->get();
-        return view('contacts.contacts',compact('contacts','groups'));
+        $grp_query = Contact::with('group');
+
+        if ($request->input('search')) {
+            $grp_query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('group_id')) {
+            $grp_query->where('group_id', $request->group_id);
+        }
+        $contacts = $grp_query->get();
+        $groups = Group::all();
+
+        return view('contacts.contacts', compact('contacts', 'groups'));
     }
     public function create()
     {
@@ -76,8 +89,9 @@ class ContactController extends Controller
         return redirect()->route('contacts.index');
     }
 
-    public function destroy(Contact $contact){
-        
+    public function destroy(Contact $contact)
+    {
+
         $contact->delete();
         return to_route('contacts.index');
     }

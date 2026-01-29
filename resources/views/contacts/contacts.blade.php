@@ -17,30 +17,37 @@
         </div>
 
         <button onclick="window.location.href='{{ route('contacts.createContact') }}'"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 transition">
+            class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 transition">
             <i class="fas fa-plus"></i>
             <span class="font-medium">Ajouter un contact</span>
         </button>
     </div>
 
     <div class="flex flex-col md:flex-row gap-4 mb-6">
-        <div class="relative flex-1">
+        <form action="{{ route('contacts.index') }}" method="GET" class="relative flex-1">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                 <i class="fas fa-search"></i>
             </span>
-            <input type="text" placeholder="Rechercher un contact par nom..."
+            <input type="text" value="{{ request('search') }}" name="search"
+                placeholder="Rechercher un contact par nom..."
                 class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-        </div>
-        <select class="border border-gray-200 rounded-xl px-4 py-2 outline-none bg-white text-gray-600">
-            <option>Tous les groupes</option>
-            @foreach ($groups as $group)
-                <option value="{{ $group->id }}">{{ $group->name }}</option>
-            @endforeach
-        </select>
+        </form>
+        <form action="{{ route('contacts.index') }}" method="GET">
+            <select name="group_id"
+                class="border border-gray-200 rounded-xl px-4 py-2 outline-none bg-white text-gray-600">
+                <option>Tous les groupes</option>
+                @foreach ($groups as $group)
+                    <option value="{{ $group->id }}" {{ request('group_id') == $group->id ? 'selected' : '' }}>
+                        {{ $group->name }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="ml-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">Filtrer</button>
+        </form>
+
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach ($contacts as $contact)
+        @forelse ($contacts as $contact)
             <div
                 class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between group hover:shadow-md transition">
                 <div class="flex items-center gap-4">
@@ -51,7 +58,8 @@
                     <div>
                         <h3 class="font-semibold text-gray-900">{{ $contact->name }}</h3>
                         <p class="text-sm text-gray-500"><i class="far fa-envelope mr-1"></i> {{ $contact->email }}</p>
-                        <p class="text-sm text-gray-500"><i class="fas fa-phone-alt mr-1"></i> {{ $contact->phone }}</p>
+                        <p class="text-sm text-gray-500"><i class="fas fa-phone-alt mr-1"></i> {{ $contact->phone }}
+                        </p>
                         <span
                             class="inline-block mt-2 px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
                             {{ $contact->group->name }}
@@ -64,14 +72,16 @@
                         <button class="text-gray-400 hover:text-blue-600"><i class="far fa-edit"></i></button>
 
                     </form>
-                    <form action="{{route('contacts.destroy',$contact->id)}}" method="POST">
+                    <form action="{{ route('contacts.destroy', $contact->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="text-gray-400 hover:text-red-600"><i class="far fa-trash-alt"></i></button>
                     </form>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <p class="text-gray-500 w-full text-center flex justify-center items-center">Aucun contact trouve.</p>
+        @endforelse
     </div>
 </div>
 </body>
