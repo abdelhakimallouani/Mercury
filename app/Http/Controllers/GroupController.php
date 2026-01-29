@@ -9,9 +9,14 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $groups = Group::all();
+        $groups = Group::query();
+
+        if($request->input('search')) {
+            $groups = $groups->where('name', 'like', '%' . $request->search . '%');
+        }
+        $groups = $groups->get();
         return view('groups.groups', compact('groups'));
     }
 

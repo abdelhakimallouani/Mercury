@@ -25,20 +25,23 @@
     </div>
 
     <div class="flex flex-col md:flex-row gap-4 mb-8">
-        <div class="relative flex-1">
+        <form action="{{ route('groups.index') }}" method="GET" class="relative flex-1">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                 <i class="fas fa-search"></i>
             </span>
-            <input type="text" placeholder="Rechercher un groupe..."
+            <input type="text" value="{{ request('search') }}" name="search"
+                placeholder="Rechercher un groupe..."
                 class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
-        </div>
+        </form>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach ($groups as $group)
-            <a href="{{ route('groups.showOne', ['id' => $group->id]) }}" class="bg-white border border-gray-100 p-5 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md transition group">
+        @forelse ($groups as $group)
+            <a href="{{ route('groups.showOne', ['id' => $group->id]) }}"
+                class="bg-white border border-gray-100 p-5 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md transition group">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center transition group-hover:bg-blue-600 group-hover:text-white">
+                    <div
+                        class="w-12 h-12 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center transition group-hover:bg-blue-600 group-hover:text-white">
                         <i class="fas fa-folder text-xl"></i>
                     </div>
                     <div>
@@ -55,7 +58,7 @@
                         </button>
 
                     </form>
-                    <form action="{{ route('groups.destroy',$group->id)}}" method="POST">
+                    <form action="{{ route('groups.destroy', $group->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
@@ -64,9 +67,12 @@
                     </form>
                 </div>
             </a>
-        @endforeach
+        @empty
+            <p class="text-gray-500 w-full text-center flex justify-center items-center">Aucun groupe trouve.</p>
+        @endforelse
     </div>
 </div>
 
 </body>
+
 </html>
