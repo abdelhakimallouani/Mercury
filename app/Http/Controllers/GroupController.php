@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Contact;
 use App\Models\Group;
 
 use Illuminate\Http\Request;
@@ -31,6 +33,14 @@ class GroupController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function showOne(Request $request){
+        
+        $id = $request->id;
+        $groups = Group::findOrfail($id);
+        $contacts = Contact::where('group_id', $id)->get();
+        return view('groups.showone',compact('groups','contacts'));
     }
 
 }

@@ -31,12 +31,6 @@
             <input type="text" placeholder="Rechercher un contact par nom..."
                 class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
         </div>
-        <select class="border border-gray-200 rounded-xl px-4 py-2 outline-none bg-white text-gray-600">
-            <option>Tous les groupes</option>
-            @foreach ($groups as $group)
-                <option value="{{ $group->id }}">{{ $group->name }}</option>
-            @endforeach
-        </select>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -59,12 +53,8 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <form action="{{ route('contacts.edit', ['contact' => $contact->id]) }}" method="GET">
-                        @csrf
-                        <button class="text-gray-400 hover:text-blue-600"><i class="far fa-edit"></i></button>
-
-                    </form>
-                     <button class="text-gray-400 hover:text-red-600"><i class="far fa-trash-alt"></i></button>
+                    <button class="text-gray-400 hover:text-blue-600"><i class="far fa-edit"></i></button>
+                    <button class="text-gray-400 hover:text-red-600"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
         @endforeach

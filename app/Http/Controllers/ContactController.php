@@ -8,14 +8,15 @@ use Illuminate\Http\Request;
 class ContactController extends Controller
 {
     public function index(){
+        $groups = Group::all();
         $contacts = Contact::with('group')->get();
-        return view('contacts.contacts',compact('contacts'));
+        return view('contacts.contacts',compact('contacts','groups'));
     }
     public function create()
     {
         $groups = Group::all();
         $contacts = Contact::all();
-        return view('contacts.createcontact', compact('groups', 'contacts'));
+        return view('contacts.createcontact', compact(['groups', 'contacts']));
     }
 
     public function store(Request $request)
@@ -40,6 +41,38 @@ class ContactController extends Controller
             'group_id' => $group_id,
         ]);
 
-        return redirect()->back();
+        return redirect()->route('contacts.index');
+    }
+
+    public function edit(Contact $contact)
+    {
+        $groups = Group::all();
+        return view('contacts.edit', compact('contact', 'groups'));
+    }
+
+    function update(Request $request, Contact $contact)
+    {
+        $name = $request->name;
+        $email = $request->email;
+        $phone = $request->phone;
+        $group_id = $request->group_id;
+
+        // valisation
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:contacts,email,' . $contact->id,
+            'phone' => 'required|string|max:20|unique:contacts,phone,' . $contact->id,
+            'group_id' => 'required|exists:groups,id',
+        ]);
+
+        // update
+        $contact->update([
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'group_id' => $group_id,
+        ]);
+
+        return redirect()->route('contacts.index');
     }
 }
