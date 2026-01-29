@@ -9,9 +9,10 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $groups = Group::all();
-        return view('groups.groups',compact('groups'));
+        return view('groups.groups', compact('groups'));
     }
 
     public function createGroup()
@@ -20,7 +21,8 @@ class GroupController extends Controller
         return view('groups.creategroup', compact('contacts'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $name = $request->name;
 
         // valisation
@@ -32,15 +34,40 @@ class GroupController extends Controller
             'name' => $name,
         ]);
 
-        return redirect()->back();
+        return redirect()->route('groups.index');
     }
 
-    public function showOne(Request $request){
-        
+    public function showOne(Request $request)
+    {
+
         $id = $request->id;
         $groups = Group::findOrfail($id);
         $contacts = Contact::where('group_id', $id)->get();
-        return view('groups.showone',compact('groups','contacts'));
+        return view('groups.showone', compact('groups', 'contacts'));
     }
 
+    public function edit(Group $group)
+    {
+        return view('groups.edit', compact('group'));
+    }
+
+    public function update(Request $request, Group $group)
+    {
+        $name = $request->name;
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $group->update([
+            'name' => $name,
+        ]);
+        return redirect()->route('groups.index');
+    }
+
+    public function destroy(Group $group)
+    {
+        $group->delete();
+        return to_route('groups.index');
+    }
 }

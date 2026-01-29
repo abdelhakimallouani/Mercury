@@ -50,7 +50,7 @@ class ContactController extends Controller
         return view('contacts.edit', compact('contact', 'groups'));
     }
 
-    function update(Request $request, Contact $contact)
+    public function update(Request $request, Contact $contact)
     {
         $name = $request->name;
         $email = $request->email;
@@ -74,5 +74,11 @@ class ContactController extends Controller
         ]);
 
         return redirect()->route('contacts.index');
+    }
+
+    public function destroy(Contact $contact){
+        
+        $contact->delete();
+        return to_route('contacts.index');
     }
 }

@@ -48,12 +48,20 @@
                 </div>
 
                 <div class="flex gap-1">
-                    <button class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">
-                        <i class="fas fa-pencil-alt text-sm"></i>
-                    </button>
-                    <button class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
-                        <i class="fas fa-trash-alt text-sm"></i>
-                    </button>
+                    <form action="{{ route('groups.edit', ['group' => $group->id]) }}" method="GET">
+                        @csrf
+                        <button class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                            <i class="fas fa-pencil-alt text-sm"></i>
+                        </button>
+
+                    </form>
+                    <form action="{{ route('groups.destroy',$group->id)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
+                            <i class="fas fa-trash-alt text-sm"></i>
+                        </button>
+                    </form>
                 </div>
             </a>
         @endforeach

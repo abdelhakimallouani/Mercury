@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="flex justify-end gap-3 mt-8">
-                    <button onclick="window.location.href='{{ route('contacts.index') }}'" type="button" class="px-6 py-2 border border-gray-200 text-gray-600 rounded-xl hover:bg-gray-50 font-medium">Annuler</button>
+                    <button onclick="window.location.href='{{ route('contacts.index') }}'" type="button" class="px-6 py-2 border border-gray-300 text-gray-600 rounded-xl hover:bg-gray-50 font-medium">Annuler</button>
                     <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium shadow-lg shadow-blue-200">Modifier</button>
                 </div>
             </form>

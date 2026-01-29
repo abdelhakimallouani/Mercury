@@ -64,7 +64,11 @@
                         <button class="text-gray-400 hover:text-blue-600"><i class="far fa-edit"></i></button>
 
                     </form>
-                     <button class="text-gray-400 hover:text-red-600"><i class="far fa-trash-alt"></i></button>
+                    <form action="{{route('contacts.destroy',$contact->id)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="text-gray-400 hover:text-red-600"><i class="far fa-trash-alt"></i></button>
+                    </form>
                 </div>
             </div>
         @endforeach
